@@ -1,0 +1,5 @@
+name: DisabledCommand
+main: Luthfi\DisabledCommand\Main
+version: 1.0.0
+api: 5.0.0
+author: Luthfi
