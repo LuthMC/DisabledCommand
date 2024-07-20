@@ -7,12 +7,14 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\utils\Config;
 use pocketmine\player\Player;
+use pocketmine\permission\PermissionAttachment;
+use _64FF00\PurePerms\PurePerms;
 
 class Main extends PluginBase implements Listener {
 
     private $config;
 
-    public function onEnable() {
+    public function onEnable(): void {
         $this->saveDefaultConfig();
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -21,7 +23,7 @@ class Main extends PluginBase implements Listener {
     /**
      * @param PlayerCommandPreprocessEvent $event
      */
-    public function onPlayerCommand(PlayerCommandPreprocessEvent $event) {
+    public function onPlayerCommand(PlayerCommandPreprocessEvent $event): void {
         $message = $event->getMessage();
         if (substr($message, 0, 1) === "/") {
             $command = explode(" ", $message)[0];
@@ -31,7 +33,7 @@ class Main extends PluginBase implements Listener {
                 if ($command === $value['command'] && !$player->hasPermission($value['permission'])) {
                     if (in_array($this->getPlayerGroup($player), explode(",", $value['groups']))) {
                         $player->sendMessage("You do not have permission to use this command.");
-                        $event->setCancelled(true);
+                        $event->cancel();
                         return;
                     }
                 }
@@ -41,7 +43,7 @@ class Main extends PluginBase implements Listener {
 
     private function getPlayerGroup(Player $player): string {
         $purePerms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
-        if ($purePerms === null) {
+        if ($purePerms === null || !$purePerms instanceof PurePerms) {
             return "default";
         }
         $group = $purePerms->getUserDataMgr()->getGroup($player);
