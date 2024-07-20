@@ -1,0 +1,4 @@
+commands:
+  - command: "/fly"
+    permission: "fly.command"
+    groups: "MEMBER"
