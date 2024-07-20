@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Luthfi\DisabledCommand;
 
 use pocketmine\plugin\PluginBase;
@@ -7,7 +9,8 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\utils\Config;
 use pocketmine\player\Player;
-use pocketmine\permission\PermissionAttachment;
+use pocketmine\command\Command;
+use pocketmine\command\CommandMap;
 use _64FF00\PurePerms\PurePerms;
 
 class Main extends PluginBase implements Listener {
@@ -29,7 +32,7 @@ class Main extends PluginBase implements Listener {
             $command = explode(" ", $message)[0];
             $player = $event->getPlayer();
 
-            foreach ($this->config->getAll() as $value) {
+            foreach ($this->config->get("commands", []) as $value) {
                 if ($command === $value['command'] && !$player->hasPermission($value['permission'])) {
                     if (in_array($this->getPlayerGroup($player), explode(",", $value['groups']))) {
                         $player->sendMessage("You do not have permission to use this command.");
