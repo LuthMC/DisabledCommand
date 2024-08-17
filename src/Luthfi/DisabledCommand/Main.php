@@ -4,7 +4,7 @@ namespace Luthfi\DisabledCommand;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerCommandPreprocessEvent;
+use pocketmine\event\server\CommandEvent;
 use pocketmine\utils\Config;
 use pocketmine\player\Player;
 use pocketmine\permission\PermissionAttachment;
@@ -21,9 +21,9 @@ class Main extends PluginBase implements Listener {
     }
 
     /**
-     * @param PlayerCommandPreprocessEvent $event
+     * @param CommandEvent $event
      */
-    public function onPlayerCommand(PlayerCommandPreprocessEvent $event): void {
+    public function onPlayerCommand(CommamdEvent $event): void {
         $message = $event->getMessage();
         if (substr($message, 0, 1) === "/") {
             $command = explode(" ", $message)[0];
